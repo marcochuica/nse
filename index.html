@@ -114,7 +114,7 @@
 <p>6. Cuál es el material predominante en los pisos de su vivienda? </p>
 <label><input type="radio" name="p6" value="0"> Tierra / Otro material (arena y tablones sin pulir)</label>
 <label><input type="radio" name="p6" value="2"> Madera (entablados) tapizón / cemento sin pulir o Pulido</label>
-<label><input type="radio" name="p6" value="5"> Losetas, terrazos, mayólicas, cerámicos /Láminas asfálticas o similares / vinílicos, mosaico o similares / Laminado tipo madera</label>
+<label><input type="radio" name="p6" value="5"> Losetas, terrazos, mayólicas, cerámicos / Láminas asfálticas o similares / vinílicos, mosaico o similares / Laminado tipo madera</label>
 <label><input type="radio" name="p6" value="8"> Parquet o madera pulida y similares, porcelanato, alfombra, mármol</label>
 </div>
 
@@ -155,7 +155,7 @@ function validar() {
     // p3, p4 y p5 no necesitan selección obligatoria (pueden ser 0)
 
     if (!valido) {
-        document.getElementById("resultado").innerHTML = "⚠️ Por favor responde todas las preguntas obligatorias.";
+        document.getElementById("resultado").innerHTML = "⚠️ Por favor responder todas las preguntas obligatorias.";
         primeraError.scrollIntoView({behavior: "smooth"});
     }
 
@@ -196,7 +196,7 @@ function calcular() {
     else nivel = "E";
 
     document.getElementById("resultado").innerHTML =
-        "Puntaje total: " + total + "<br>Según la información ingresada, usted pertenece al nivel socioeconómico: " + nivel;
+        "Puntaje total: " + total + "<br>Según la información ingresada, el encuestado pertenece al nivel socioeconómico: " + nivel;
 }
 </script>
 <br>
