@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Encuesta NSE</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #eef2f5;
+        margin: 0;
+        padding: 10px;
+    }
+
+    h2 {
+        text-align: center;
+        color: #3b5a87;
+    }
+
+    .pregunta {
+        background: #ffffff;
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    p {
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+
+    label {
+        display: block;
+        margin: 6px 0;
+        cursor: pointer;
+    }
+
+    input {
+        margin-right: 8px;
+    }
+
+    button {
+        width: 100%;
+        background-color: #3b5a87;
+        color: white;
+        border: none;
+        padding: 15px;
+        font-size: 16px;
+        border-radius: 8px;
+        margin-top: 10px;
+    }
+
+    button:hover {
+        background-color: #2f476d;
+    }
+
+    #resultado {
+        margin-top: 20px;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .error {
+        border: 2px solid #e74c3c;
+    }
+</style>
+</head>
+
+<body>
+
+<h2>Encuesta NSE</h2>
+
+<form id="encuesta">
+
+<div class="pregunta" id="preg1">
+<p>1. Cuál es el último año o grado de estudios y nivel que aprobó el jefe de hogar?</p>
+<label><input type="radio" name="p1" value="0"> Sin educación / Inicial / Primaria incompleta</label>
+<label><input type="radio" name="p1" value="1"> Primaria completa / Secundaria incompleta</label>
+<label><input type="radio" name="p1" value="2"> Secundaria completa / Técnica incompleta</label>
+<label><input type="radio" name="p1" value="3"> Técnica completa / Universitaria incompleta</label>
+<label><input type="radio" name="p1" value="5"> Universitaria completa</label>
+<label><input type="radio" name="p1" value="7"> Postgrado universitario</label>
+</div>
+
+<div class="pregunta" id="preg2">
+<p>2. El jefe del hogar se encuentra afiliado a un seguro privado o EPS?:</p>
+<label><input type="radio" name="p2" value="0"> No</label>
+<label><input type="radio" name="p2" value="7"> Sí</label>
+</div>
+
+<div class="pregunta" id="preg3">
+<p>3. Cuál de estos bienes tiene en su hogar:</p>
+<label><input type="checkbox" name="p3"> Lavadora</label>
+<label><input type="checkbox" name="p3"> Refrigeradora</label>
+</div>
+
+<div class="pregunta" id="preg4">
+<p>4. Cuál de estos tipos de tecnología de comunicación (TIC) tiene en su hogar?</p>
+<label><input type="checkbox" name="p4"> Computadora, laptop en funcionamiento</label>
+<label><input type="checkbox" name="p4"> Internet (sin compartir por el celular)</label>
+<label><input type="checkbox" name="p4"> TV por cable</label>
+</div>
+
+<div class="pregunta" id="preg5">
+<p>5. Tiene en su hogar:</p>
+<label><input type="checkbox" name="p5" value="6"> Auto y/o camioneta para uso particular</label>
+<label><input type="checkbox" name="p5" value="8"> Servicio doméstico en el hogar pagado (mínimo que vaya una vez por semana)</label>
+</div>
+
+<div class="pregunta" id="preg6">
+<p>6. Cuál es el material predominante en los pisos de su vivienda? </p>
+<label><input type="radio" name="p6" value="0"> Tierra / Otro material (arena y tablones sin pulir)</label>
+<label><input type="radio" name="p6" value="2"> Madera (entablados) tapizón / cemento sin pulir o Pulido</label>
+<label><input type="radio" name="p6" value="5"> Losetas, terrazos, mayólicas, cerámicos /Láminas asfálticas o similares / vinílicos, mosaico o similares / Laminado tipo madera</label>
+<label><input type="radio" name="p6" value="8"> Parquet o madera pulida y similares, porcelanato, alfombra, mármol</label>
+</div>
+
+<div class="pregunta" id="preg7">
+<p>7. El baño servicio higiénico que tiene en su hogar está conectado a:</p>
+<label><input type="radio" name="p7" value="0"> No tiene baño / No está conectado a una red pública</label>
+<label><input type="radio" name="p7" value="2"> Baño compartido fuera de la vivienda (Ejm. Quintas, corralones, cuartos con baño compartido, etc.)</label>
+<label><input type="radio" name="p7" value="5"> Baño dentro de la vivienda</label>
+</div>
+
+<button type="button" onclick="calcular()">Calcular NSE</button>
+
+</form>
+
+<div id="resultado"></div>
+
+<script>
+function validar() {
+    let valido = true;
+    let primeraError = null;
+
+    // limpiar errores
+    document.querySelectorAll('.pregunta').forEach(p => p.classList.remove('error'));
+
+    function marcarError(id) {
+        let el = document.getElementById(id);
+        el.classList.add('error');
+        if (!primeraError) primeraError = el;
+        valido = false;
+    }
+
+    if (!document.querySelector('input[name="p1"]:checked')) marcarError("preg1");
+    if (!document.querySelector('input[name="p2"]:checked')) marcarError("preg2");
+    if (!document.querySelector('input[name="p6"]:checked')) marcarError("preg6");
+    if (!document.querySelector('input[name="p7"]:checked')) marcarError("preg7");
+
+    // p3, p4 y p5 no necesitan selección obligatoria (pueden ser 0)
+
+    if (!valido) {
+        document.getElementById("resultado").innerHTML = "⚠️ Por favor responde todas las preguntas obligatorias.";
+        primeraError.scrollIntoView({behavior: "smooth"});
+    }
+
+    return valido;
+}
+
+function calcular() {
+    if (!validar()) return;
+
+    let total = 0;
+
+    total += parseInt(document.querySelector('input[name="p1"]:checked').value);
+    total += parseInt(document.querySelector('input[name="p2"]:checked').value);
+    total += parseInt(document.querySelector('input[name="p6"]:checked').value);
+    total += parseInt(document.querySelector('input[name="p7"]:checked').value);
+
+    // P3
+    let p3 = document.querySelectorAll('input[name="p3"]:checked').length;
+    if (p3 === 1) total += 1;
+    else if (p3 === 2) total += 4;
+
+    // P4
+    let p4 = document.querySelectorAll('input[name="p4"]:checked').length;
+    if (p4 === 1) total += 1;
+    else if (p4 === 2) total += 3;
+    else if (p4 === 3) total += 5;
+
+    // P5
+    document.querySelectorAll('input[name="p5"]:checked').forEach(el => {
+        total += parseInt(el.value);
+    });
+
+    let nivel = "";
+    if (total >= 37) nivel = "A";
+    else if (total >= 22) nivel = "B";
+    else if (total >= 13) nivel = "C";
+    else if (total >= 8) nivel = "D";
+    else nivel = "E";
+
+    document.getElementById("resultado").innerHTML =
+        "Puntaje total: " + total + "<br>Según la información ingresada, usted pertenece al nivel socioeconómico: " + nivel;
+}
+</script>
+
+</body>
+</html>
